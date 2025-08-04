@@ -23,7 +23,7 @@ public class MessageController {
     }
 
     @GetMapping("/send-to-b/{content}")
-    public ResponseEntity<MessageDto> sendToServerB(@PathVariable String content) {
+    public ResponseEntity<MessageDto> sendToServerB(@PathVariable("content") String content) {
         MessageDto response = messageService.sendMessageToServerB(content);
         return ResponseEntity.ok(response);
     }
