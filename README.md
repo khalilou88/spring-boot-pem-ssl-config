@@ -18,7 +18,6 @@ ssl-communication-parent/
 - **Modern Spring Boot 3.3.2** with Java 17
 - **SSL/TLS encryption** using PEM certificates
 - **SSL Bundles** for certificate management
-- **WebFlux WebClient** for reactive HTTP communication
 - **Maven multi-module** project structure
 - **Mutual SSL authentication** between services
 - **Health endpoints** with SSL verification
@@ -121,7 +120,6 @@ Enable detailed SSL logging by adding to `application.yml`:
 logging:
   level:
     javax.net.ssl: DEBUG
-    org.springframework.web.reactive.function.client: TRACE
 ```
 
 ## Certificate Management
