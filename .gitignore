@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/certs/
+/server-a/src/main/resources/certs/
+/server-b/src/main/resources/certs/
