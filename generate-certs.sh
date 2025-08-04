@@ -76,4 +76,35 @@ EOF
 
 # Generate Server B certificate signed by CA
 openssl x509 -req -in server-b.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
-    -out server-b.crt -days $
+    -out server-b.crt -days $VALIDITY_DAYS -extensions v3_req -extfile server-b.ext
+
+echo "🧹 Cleaning up temporary files..."
+rm -f *.csr *.ext *.srl
+
+echo "📁 Copying certificates to resource directories..."
+
+# Copy certificates to server-a resources
+mkdir -p ../server-a/src/main/resources/certs
+cp ca.crt server-a.crt server-a.key ../server-a/src/main/resources/certs/
+
+# Copy certificates to server-b resources
+mkdir -p ../server-b/src/main/resources/certs
+cp ca.crt server-b.crt server-b.key ../server-b/src/main/resources/certs/
+
+echo "✅ Certificate generation completed!"
+echo ""
+echo "📋 Generated files:"
+echo "   - ca.crt (CA Certificate)"
+echo "   - ca.key (CA Private Key)"
+echo "   - server-a.crt (Server A Certificate)"
+echo "   - server-a.key (Server A Private Key)"
+echo "   - server-b.crt (Server B Certificate)"
+echo "   - server-b.key (Server B Private Key)"
+echo ""
+echo "🔍 To verify certificates:"
+echo "   openssl x509 -in certs/server-a.crt -text -noout"
+echo "   openssl x509 -in certs/server-b.crt -text -noout"
+echo ""
+echo "🚀 Certificates are ready for use with Spring Boot SSL bundles!"
+
+cd ..
