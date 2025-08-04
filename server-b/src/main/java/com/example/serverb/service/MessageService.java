@@ -5,8 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -15,45 +14,29 @@ import java.util.UUID;
 public class MessageService {
 
     private static final Logger log = LoggerFactory.getLogger(MessageService.class);
-    private final WebClient webClient;
+    private final RestTemplate restTemplate;
     private final String serverAUrl;
 
-    public MessageService(WebClient webClient,
-                          @Value("${app.server-a.url}") String serverAUrl) {
-        this.webClient = webClient;
+    public MessageService(RestTemplate restTemplate, @Value("${app.server-a.url}") String serverAUrl) {
+        this.restTemplate = restTemplate;
         this.serverAUrl = serverAUrl;
     }
 
     public MessageDto processMessage(MessageDto message) {
         log.info("Processing message from {}: {}", message.source(), message.content());
 
-        return new MessageDto(
-                UUID.randomUUID().toString(),
-                "Processed by Server B: " + message.content(),
-                Instant.now(),
-                "server-b"
-        );
+        return new MessageDto(UUID.randomUUID().toString(), "Processed by Server B: " + message.content(), Instant.now(), "server-b");
     }
 
     public MessageDto sendMessageToServerA(String content) {
-        MessageDto message = new MessageDto(
-                UUID.randomUUID().toString(),
-                content,
-                Instant.now(),
-                "server-b"
-        );
+        MessageDto message = new MessageDto(UUID.randomUUID().toString(), content, Instant.now(), "server-b");
 
         log.info("Sending message to Server A: {}", content);
 
         try {
-            MessageDto response = webClient
-                    .post()
-                    .uri(serverAUrl + "/api/v1/messages")
-                    .body(Mono.just(message), MessageDto.class)
-                    .retrieve()
-                    .bodyToMono(MessageDto.class)
-                    .block();
 
+
+            MessageDto response = restTemplate.postForObject(serverAUrl + "/api/v1/messages", message, MessageDto.class);
             log.info("Received response from Server A: {}", response);
             return response;
         } catch (Exception e) {
