@@ -1,0 +1,48 @@
+name: CI - Test SSL Communication Project
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Make generate-certs.sh executable
+        run: chmod +x generate-certs.sh
+
+      - name: Generate SSL Certificates
+        run: ./generate-certs.sh
+
+      - name: Build with Maven
+        run: ./mvnw clean install
+
+      - name: Run Server A in Background
+        run: ./mvnw spring-boot:run -pl server-a &
+
+      - name: Run Server B in Background
+        run: ./mvnw spring-boot:run -pl server-b &
+
+      - name: Wait for Services to Start
+        run: |
+          sleep 30
+          curl -k https://localhost:8443/api/v1/messages/health
+          curl -k https://localhost:9443/api/v1/messages/health
+
+      - name: Test A → B Communication
+        run: curl -k https://localhost:8443/api/v1/messages/send-to-b/GitHubActionTestA
+
+      - name: Test B → A Communication
+        run: curl -k https://localhost:9443/api/v1/messages/send-to-a/GitHubActionTestB
