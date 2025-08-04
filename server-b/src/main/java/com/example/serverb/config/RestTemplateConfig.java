@@ -11,6 +11,6 @@ public class RestTemplateConfig {
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder, SslBundles sslBundles) {
-        return restTemplateBuilder.setSslBundle(sslBundles.getBundle("client")).build();
+        return restTemplateBuilder.sslBundle(sslBundles.getBundle("client")).build();
     }
 }
