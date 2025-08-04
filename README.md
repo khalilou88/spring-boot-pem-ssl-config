@@ -114,29 +114,7 @@ Each server:
 2. Trusts the CA certificate for outgoing requests
 3. Validates peer certificates using the CA
 
-## Development
-
-### Running Individual Services
-
-**Server A only:**
-```bash
-./mvnw spring-boot:run -pl server-a
-```
-
-**Server B only:**
-```bash
-./mvnw spring-boot:run -pl server-b
-```
-
-### Building Specific Modules
-
-```bash
-./mvnw clean install -pl shared
-./mvnw clean install -pl server-a -am
-./mvnw clean install -pl server-b -am
-```
-
-### Debugging SSL Issues
+## Debugging SSL Issues
 
 Enable detailed SSL logging by adding to `application.yml`:
 ```yaml
@@ -164,27 +142,3 @@ openssl x509 -in certs/server-b.crt -text -noout
 openssl verify -CAfile certs/ca.crt certs/server-a.crt
 openssl verify -CAfile certs/ca.crt certs/server-b.crt
 ```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Certificate errors**: Ensure certificates are generated and in the correct locations
-2. **Port conflicts**: Check if ports 8443/9443 are available
-3. **SSL handshake failures**: Verify certificate validity and CA trust chain
-4. **Connection refused**: Ensure both services are running and accessible
-
-### Logs to Check
-
-- SSL handshake details in application logs
-- WebClient request/response logs
-- Spring Boot actuator health endpoint status
-
-## Production Considerations
-
-- Use proper certificate authority (not self-signed)
-- Implement certificate rotation strategy
-- Configure proper security headers
-- Use secrets management for private keys
-- Implement proper error handling and circuit breakers
-- Add monitoring and alerting for SSL certificate expiration
