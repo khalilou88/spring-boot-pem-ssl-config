@@ -37,6 +37,7 @@ openssl req -new -key server-a.key -out server-a.csr \
 
 # Create extensions file for Server A
 cat > server-a.ext << EOF
+[v3_req]
 authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
 keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
@@ -63,6 +64,7 @@ openssl req -new -key server-b.key -out server-b.csr \
 
 # Create extensions file for Server B
 cat > server-b.ext << EOF
+[v3_req]
 authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
 keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
