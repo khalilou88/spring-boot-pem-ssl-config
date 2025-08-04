@@ -15,7 +15,7 @@ ssl-communication-parent/
 
 ## Features
 
-- **Modern Spring Boot 3.3.2** with Java 21
+- **Modern Spring Boot 3.3.2** with Java 17
 - **SSL/TLS encryption** using PEM certificates
 - **SSL Bundles** for certificate management
 - **WebFlux WebClient** for reactive HTTP communication
@@ -26,7 +26,7 @@ ssl-communication-parent/
 
 ## Prerequisites
 
-- Java 21 or higher
+- Java 17 or higher
 - Maven 3.8+
 - OpenSSL (for certificate generation)
 - Bash shell (for running scripts)
