@@ -10,7 +10,7 @@ ssl-communication-parent/
 ├── server-b/           # Second Spring Boot service (port 9443)
 ├── shared/             # Common DTOs and utilities
 ├── generate-certs.sh   # Certificate generation script
-└── pom.xml            # Parent POM
+└── pom.xml             # Parent POM
 ```
 
 ## Features
@@ -43,21 +43,19 @@ chmod +x generate-certs.sh
 ### 2. Build the Project
 
 ```bash
-mvn clean install
+./mvnw clean install
 ```
 
 ### 3. Start Server A
 
 ```bash
-cd server-a
-mvn spring-boot:run
+./mvnw spring-boot:run -pl server-a
 ```
 
 ### 4. Start Server B (in a new terminal)
 
 ```bash
-cd server-b
-mvn spring-boot:run
+./mvnw spring-boot:run -pl server-b
 ```
 
 ### 5. Test the Communication
@@ -122,20 +120,20 @@ Each server:
 
 **Server A only:**
 ```bash
-mvn spring-boot:run -pl server-a
+./mvnw spring-boot:run -pl server-a
 ```
 
 **Server B only:**
 ```bash
-mvn spring-boot:run -pl server-b
+./mvnw spring-boot:run -pl server-b
 ```
 
 ### Building Specific Modules
 
 ```bash
-mvn clean install -pl shared
-mvn clean install -pl server-a -am
-mvn clean install -pl server-b -am
+./mvnw clean install -pl shared
+./mvnw clean install -pl server-a -am
+./mvnw clean install -pl server-b -am
 ```
 
 ### Debugging SSL Issues
